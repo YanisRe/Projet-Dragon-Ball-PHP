@@ -60,8 +60,13 @@ class Personnage{
         }
     }
 }
+class combat{
 
+<<<<<<< HEAD
+}
+=======
 
+>>>>>>> 26739d71d7329a809871c305d480d569aa939092
 class Heros extends Personnage{
 
     private $adversaire;
