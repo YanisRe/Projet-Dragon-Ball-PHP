@@ -61,19 +61,33 @@ class Personnage{
     }
 
     public function choixCamp(){
+
+        if($this->est_vilain = $true){
+
+        }
+
+        $this->est_vilain = $false;
         echo "Veuillez choisir votre camp : h pour héros ou v pour vilain." . PHP_EOL;
         $choix = readline();
         
         if($choix === "h"){
             $this->est_vilain = false;
-            for($i=0; $i</*Taille de la base d'ennemis*/; $i++){
+            echo "Veuillez entrer le nom de votre personnage." . PHP_EOL;
+            $nom = readline();
+            for($i=0; $i</*Taille de la base de héros*/; $i++){
                 $hero($i)= new Heros($nom, $vie, $puissance_attaque, $degats_subis, $adversaire);
+                echo "Vous avez choisi le camp des héros !" . PHP_EOL;
+                return $hero($i);
             }
         }
         else if ($choix === "v"){
             $this->est_vilain = true;
+            echo "Veuillez entrer le nom de votre personnage." . PHP_EOL;
+            $nom = readline();
             for($i=0; $i</*Taille de la base d'ennemis*/; $i++){
                 $vilain($i)= new Vilains($nom, $vie, $puissance_attaque, $degats_subis, $adversaire);
+                echo "Vous avez choisi le camp des vilains !" . PHP_EOL;
+                return $vilain($i);
             }
         }
         else{
@@ -88,10 +102,10 @@ class combat{
 }
 class Heros extends Personnage{
     
-    private $adversaire;
+    private $adversaire = $vilain($i);
     private $nom;
-    private $vie;
-    private $puissance_attaque;
+    private $vie = 200;
+    private $puissance_attaque = 20;
     private $degats_subis;
     
     
@@ -103,11 +117,11 @@ class Heros extends Personnage{
 
 class Vilains extends Personnage{
     
-    private $adversaire;
+    private $adversaire = $hero($i);
     private $nom;
-    private $vie;
-    private $puissance_attaque;
-    private $degats_subis;
+    private $vie = 250;
+    private $puissance_attaque = 10;
+    private $degats_subis = $this->prendre_degats($this->puissance_attaque);
     
     
     public function __construct($nom, $vie, $puissance_attaque, $degats_subis, $adversaire){
