@@ -89,7 +89,7 @@ class Vilains extends Personnage{
     public function __construct($nom, $vie, $puissance_attaque, $degats_subis, $adversaire){
         parent::__construct($nom, $vie, $puissance_attaque, $degats_subis, $adversaire);
     }
-
+    
 }
 
 
