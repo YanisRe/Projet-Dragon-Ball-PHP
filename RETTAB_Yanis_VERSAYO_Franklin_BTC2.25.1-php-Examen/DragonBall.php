@@ -60,18 +60,15 @@ class Personnage{
         }
     }
 }
-class combat{
-
-}
 class Heros extends Personnage{
-
+    
     private $adversaire;
     private $nom;
     private $vie;
     private $puissance_attaque;
     private $degats_subis;
-
-
+    
+    
     public function __construct($nom, $vie, $puissance_attaque, $degats_subis, $adversaire){
         parent::__construct($nom, $vie, $puissance_attaque, $degats_subis, $adversaire);
     }
@@ -85,13 +82,52 @@ class Vilains extends Personnage{
     private $vie;
     private $puissance_attaque;
     private $degats_subis;
+    
+    
+    public function __construct($nom, $vie, $puissance_attaque, $degats_subis, $adversaire){
+        parent::__construct($nom, $vie, $puissance_attaque, $degats_subis, $adversaire);
+    }
+    
+}
 
+class combat extends Personnage{
+
+    private $adversaire;
+    private $nom;
+    private $vie;
+    private $puissance_attaque;
+    private $degats_subis;
 
     public function __construct($nom, $vie, $puissance_attaque, $degats_subis, $adversaire){
         parent::__construct($nom, $vie, $puissance_attaque, $degats_subis, $adversaire);
     }
 
+    public function systeme_de_combat(){
+        while($this->est_vivant() && $this->adversaire->est_vivant()){
+            $this->attaque($this->adversaire);
+            $this->adversaire->attaque($this);
+
+            $this->attaque($this->adversaire) = $this->puissance_attaque;
+            $this->adversaire->attaque($this) = $this->puissance_attaque;
+
+
+        }
+    }
 }
 
+class IA extends Personnage {
+    private $adversaire;
+    private $nom;
+    private $vie;
+    private $puissance_attaque;
+    private $degats_subis;
+    private boolval $est_vilain
+
+
+}
+
+class Jeu extends combat {
+    
+}
 
 ?>
