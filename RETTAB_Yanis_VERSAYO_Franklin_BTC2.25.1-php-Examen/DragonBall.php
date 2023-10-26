@@ -199,14 +199,40 @@ class combat extends Personnage{
                         $this->attaque($this->adversaire) = $this->prendre_degats($this->degats_subis);
                         $this->adversaire->attaque($this) = $this->adversaire->prendre_degats($this->degats_subis);
 
+                        echo "Veuillez choisir une action : a pour attaquer, t pour transformation, et f pour essayer de prendre la fuite." . PHP_EOL;
                         $decision = readline();
                         switch ($decision){
                             case "a":
                                 echo "Vous avez choisi d'attaquer." . PHP_EOL . "Veuillez choisir entre une attaque normale (n) ou une attaque spéciale (s)." . PHP_EOL;
                                 $attaque = readline();
                                 switch ($attaque){
-                                    echo "Vous avez choisi l'option attaque normale." . PHP_EOL;
-                                    
+                                    case "n":
+                                        echo "Vous avez choisi l'option attaque normale." . PHP_EOL;
+                                        $this->attaque($this->adversaire);
+                                        //
+                                        break;
+                                    case "s":
+                                        echo "Vous avez choisi l'option attaque spéciale." . PHP_EOL;
+                                        $attaque_speciale = readline();
+                                        switch ($attaque_speciale){
+                                            case 1:
+                                                echo "Vous avez choisi l'attaque spéciale Kienzan." . PHP_EOL;
+                                                $this->attaque($this->adversaire);
+                                                //
+                                                break;
+                                            case 2:
+                                                echo "Vous avez choisi l'attaque spéciale Kamehameha." . PHP_EOL;
+                                                $this->attaque($this->adversaire);
+                                                //
+                                                break;
+                                            case 3:
+                                                echo "Vous avez choisi l'attaque spéciale Genkidama." . PHP_EOL;
+                                                $this->attaque($this->adversaire);
+                                                //
+                                                break;
+                                        //
+                                        break;
+                                        $adversaire->attaque($this);
                                 }
                                 break;
                             }
@@ -224,7 +250,7 @@ class combat extends Personnage{
             endswitch;
                     }
             }
-
+        }
                 
 
 
