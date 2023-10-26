@@ -77,9 +77,9 @@ class Personnage{
             $this->est_vilain = false;
             echo "Veuillez entrer le nom de votre personnage." . PHP_EOL;
             $nom = readline();
-                $hero($i)= new Heros($nom, $vie, $puissance_attaque, $degats_subis, $adversaire);
-                echo "Vous avez choisi le camp des héros !" . PHP_EOL;
-                return $hero($i);
+            $hero($i)= new Heros($nom, $vie, $puissance_attaque, $degats_subis, $adversaire);
+            echo "Vous avez choisi le camp des héros !" . PHP_EOL;
+            return $hero($i);
         }
         else if ($choix === "v"){
             $this->est_vilain = true;
@@ -182,15 +182,50 @@ class combat extends Personnage{
         //synopsis(); if play puis choixCamp();
 
         choixCamp();
-        while($this->vie > 0 && $this->adversaire->vie > 0){
-                        
-            $this->attaque($this->adversaire);
-            $this->adversaire->attaque($this);
 
-            $this->attaque($this->adversaire) = $this->prendre_degats($this->degats_subis);
-            $this->adversaire->attaque($this) = $this->adversaire->prendre_degats($this->degats_subis);
 
-            est_mort();
+        public function menu(){
+            echo "Bienvenue dans le jeu Dragon Ball !" . PHP_EOL;
+            echo "Veuillez choisir une action : p pour jouer ou q pour quitter." . PHP_EOL;
+            $action = readline();
+            switch ($action):
+                case "p":
+                    synopsis();
+                    break;
+                case "q":
+                    echo "Vous avez quitté le jeu.";
+                    break;
+                default:
+                    echo "Veuillez choisir une action valide." . PHP_EOL;
+                    $action = readline();
+                    break;
+            endswitch;
+        }
+        echo "Veuillez choisir une action : c pour combattre ou q pour quitter." . PHP_EOL;
+        
+        $action = readline();
+        switch ($action):
+            case "c":
+                while($this->vie > 0 && $this->adversaire->vie > 0){
+                    
+                    $this->attaque($this->adversaire);
+                    $this->adversaire->attaque($this);
+                    
+                    $this->attaque($this->adversaire) = $this->prendre_degats($this->degats_subis);
+                    $this->adversaire->attaque($this) = $this->adversaire->prendre_degats($this->degats_subis);
+                    est_mort();
+                    //
+            case "q":
+                echo "Vous avez quitté le jeu.";
+                break;
+            default:
+                echo "Veuillez choisir une action valide." . PHP_EOL;
+                break;
+                
+
+
+
+        
 
 
             //est_vivant();
@@ -209,7 +244,34 @@ class IA extends Personnage{
     private $degats_subis;
     private boolval $est_vilain;
 
+    public function __construct($nom, $vie, $puissance_attaque, $degats_subis, $adversaire, $est_vilain){
+        parent::__construct($nom, $vie, $puissance_attaque, $degats_subis, $adversaire);
+        $this->est_vilain = $est_vilain;
+    }
 
+    public function logiqueEnnemi(){
+        if($this->est_vilain == true){
+            $hero($i) = new Heros($nom, $vie, $puissance_attaque, $degats_subis, $adversaire);
+            $this->adversaire = $hero($i);
+        }
+        else{
+            $vilain($i) = new Vilains($nom, $vie, $puissance_attaque, $degats_subis, $adversaire);
+            $this->adversaire = $vilain($i);
+        }
+    }
+
+    public function logiqueCombat(){
+        while($this->vie > 0 && $this->adversaire->vie > 0){
+                        
+            $this->attaque($this->adversaire);
+            $this->adversaire->attaque($this);
+
+            $this->attaque($this->adversaire) = $this->prendre_degats($this->degats_subis);
+            $this->adversaire->attaque($this) = $this->adversaire->prendre_degats($this->degats_subis);
+
+            est_mort();
+        }
+    }
 }
 
 class Jeu extends combat{
@@ -237,7 +299,7 @@ class Jeu extends combat{
             $this->adversaire = $adversaire;
             $this->est_vilain = $est_vilain;
             $this->est_heros = $est_heros;
-            
+
         }
 }
 
