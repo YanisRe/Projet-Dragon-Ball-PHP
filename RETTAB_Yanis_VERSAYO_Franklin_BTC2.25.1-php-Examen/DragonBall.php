@@ -65,6 +65,9 @@ class Personnage{
         if($this->est_vilain = $true){
 
         }
+        else{
+            $adversaire = $vilain($i);
+        }
 
         $this->est_vilain = $false;
         echo "Veuillez choisir votre camp : h pour héros ou v pour vilain." . PHP_EOL;
@@ -74,21 +77,18 @@ class Personnage{
             $this->est_vilain = false;
             echo "Veuillez entrer le nom de votre personnage." . PHP_EOL;
             $nom = readline();
-            for($i=11; $i<strlen($hero)+3; $i++){
                 $hero($i)= new Heros($nom, $vie, $puissance_attaque, $degats_subis, $adversaire);
                 echo "Vous avez choisi le camp des héros !" . PHP_EOL;
                 return $hero($i);
-            }
         }
         else if ($choix === "v"){
             $this->est_vilain = true;
+            $adversaire = $hero($i);
             echo "Veuillez entrer le nom de votre personnage." . PHP_EOL;
             $nom = readline();
-            for($i=0; $i</*Taille de la base d'ennemis*/; $i++){
-                $vilain($i)= new Vilains($nom, $vie, $puissance_attaque, $degats_subis, $adversaire);
+            $vilain($i)= new Vilains($nom, $vie, $puissance_attaque, $degats_subis, $adversaire);
                 echo "Vous avez choisi le camp des vilains !" . PHP_EOL;
                 return $vilain($i);
-            }
         }
         else{
             echo "Veuillez choisir un camp valide." . PHP_EOL;
@@ -177,6 +177,11 @@ class combat extends Personnage{
         $this->degats_subis = $degats_subis;
         $this->adversaire = $adversaire;
 
+
+        //menu();
+        //synopsis(); if play puis choixCamp();
+
+        choixCamp();
         while($this->vie > 0 && $this->adversaire->vie > 0){
                         
             $this->attaque($this->adversaire);
@@ -232,12 +237,7 @@ class Jeu extends combat{
             $this->adversaire = $adversaire;
             $this->est_vilain = $est_vilain;
             $this->est_heros = $est_heros;
-    
-            if($this->est_vilain == true){
-                $this->systeme_de_combat();
-            }else{
-                $this->systeme_de_combat();
-            }
+            
         }
 }
 
