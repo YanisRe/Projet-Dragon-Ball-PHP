@@ -74,7 +74,7 @@ class Personnage{
             $this->est_vilain = false;
             echo "Veuillez entrer le nom de votre personnage." . PHP_EOL;
             $nom = readline();
-            for($i=0; $i</*Taille de la base de héros*/; $i++){
+            for($i=11; $i<strlen($hero)+3; $i++){
                 $hero($i)= new Heros($nom, $vie, $puissance_attaque, $degats_subis, $adversaire);
                 echo "Vous avez choisi le camp des héros !" . PHP_EOL;
                 return $hero($i);
@@ -95,40 +95,65 @@ class Personnage{
             choixCamp();
         }
     }
-    //Boucle permettant de créer un perso avec une variable $i+1
 }
-class combat{
-    
-}
+
+
+
 class Heros extends Personnage{
     
     private $adversaire = $vilain($i);
     private $nom;
-    private $vie = 200;
+    private $vie = 400;
     private $puissance_attaque = 20;
-    private $degats_subis;
+    private $degats_subis = $this->prendre_degats($this->$vilain($i)->puissance_attaque);
     
     
     public function __construct($nom, $vie, $puissance_attaque, $degats_subis, $adversaire){
         parent::__construct($nom, $vie, $puissance_attaque, $degats_subis, $adversaire);
     }
     
+    $hero = [$hero1, $hero2, $hero3, $hero4, $hero5, $hero6, $hero7, $hero8, $hero9, $hero10];
+
+    $hero1 = new Heros("Goku", 100, 20, 10, $vilain($i));
+    $hero2 = new Heros("Vegeta", 100, 20, 10, $vilain($i));
+    $hero3 = new Heros("Gohan", 100, 20, 10, $vilain($i));
+    $hero4 = new Heros("Trunks", 100, 20, 10, $vilain($i));
+    $hero5 = new Heros("Goten", 100, 20, 10, $vilain($i));
+    $hero6 = new Heros("Piccolo", 100, 20, 10, $vilain($i));
+    $hero7 = new Heros("Krilin", 100, 20, 10, $vilain($i));
+    $hero8 = new Heros("C-18", 100, 20, 10, $vilain($i));
+    $hero9 = new Heros("Tenshinhan", 100, 20, 10, $vilain($i));
+    $hero10 = new Heros("C-17", 100, 20, 10, $vilain($i));
+
+
 }
 
 class Vilains extends Personnage{
     
     private $adversaire = $hero($i);
     private $nom;
-    private $vie = 250;
+    private $vie = 480;
     private $puissance_attaque = 10;
-    private $degats_subis = $this->prendre_degats($this->puissance_attaque);
+    private $degats_subis = $this->prendre_degats($this->$hero($i)->puissance_attaque);
     
     
     public function __construct($nom, $vie, $puissance_attaque, $degats_subis, $adversaire){
         parent::__construct($nom, $vie, $puissance_attaque, $degats_subis, $adversaire);
     }
     
-    //$vilain1 = new Vilains("Freezer", 100, 20, 10, $hero($i));
+    $vilain = [$vilain1, $vilain2, $vilain3, $vilain4, $vilain5, $vilain6, $vilain7, $vilain8, $vilain9, $vilain10];
+
+    $vilain1 = new Vilains("Radditz", 100, 20, 10, $hero($i));
+    $vilain2 = new Vilains("Freezer", 100, 20, 10, $hero($i));
+    $vilain3 = new Vilains("Cell", 100, 20, 10, $hero($i));
+    $vilain4 = new Vilains("Janemba", 100, 20, 10, $hero($i));
+    $vilain5 = new Vilains("Buu", 100, 20, 10, $hero($i));
+    $vilain6 = new Vilains("Dr. Gero", 100, 20, 10, $hero($i));
+    $vilain7 = new Vilains("Zamasu", 100, 20, 10, $hero($i));
+    $vilain8 = new Vilains("Cell Jr.", 100, 20, 10, $hero($i));
+    $vilain9 = new Vilains("Saibaiman", 100, 20, 10, $hero($i));
+    $vilain10 = new Vilains("Li Shenron", 100, 20, 10, $hero($i));
+
 }
 
 class combat extends Personnage{
