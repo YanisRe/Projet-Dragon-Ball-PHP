@@ -97,6 +97,18 @@ class Personnage{
     }
 }
 
+$hero = [$hero1, $hero2, $hero3, $hero4, $hero5, $hero6, $hero7, $hero8, $hero9, $hero10];
+
+    $hero1 = new Heros("Goku", 100, 20, 10, $vilain($i));
+    $hero2 = new Heros("Vegeta", 100, 20, 10, $vilain($i));
+    $hero3 = new Heros("Gohan", 100, 20, 10, $vilain($i));
+    $hero4 = new Heros("Trunks", 100, 20, 10, $vilain($i));
+    $hero5 = new Heros("Goten", 100, 20, 10, $vilain($i));
+    $hero6 = new Heros("Piccolo", 100, 20, 10, $vilain($i));
+    $hero7 = new Heros("Krilin", 100, 20, 10, $vilain($i));
+    $hero8 = new Heros("C-18", 100, 20, 10, $vilain($i));
+    $hero9 = new Heros("Tenshinhan", 100, 20, 10, $vilain($i));
+    $hero10 = new Heros("C-17", 100, 20, 10, $vilain($i));
 
 
 class Heros extends Personnage{
@@ -112,21 +124,20 @@ class Heros extends Personnage{
         parent::__construct($nom, $vie, $puissance_attaque, $degats_subis, $adversaire);
     }
     
-    $hero = [$hero1, $hero2, $hero3, $hero4, $hero5, $hero6, $hero7, $hero8, $hero9, $hero10];
-
-    $hero1 = new Heros("Goku", 100, 20, 10, $vilain($i));
-    $hero2 = new Heros("Vegeta", 100, 20, 10, $vilain($i));
-    $hero3 = new Heros("Gohan", 100, 20, 10, $vilain($i));
-    $hero4 = new Heros("Trunks", 100, 20, 10, $vilain($i));
-    $hero5 = new Heros("Goten", 100, 20, 10, $vilain($i));
-    $hero6 = new Heros("Piccolo", 100, 20, 10, $vilain($i));
-    $hero7 = new Heros("Krilin", 100, 20, 10, $vilain($i));
-    $hero8 = new Heros("C-18", 100, 20, 10, $vilain($i));
-    $hero9 = new Heros("Tenshinhan", 100, 20, 10, $vilain($i));
-    $hero10 = new Heros("C-17", 100, 20, 10, $vilain($i));
-
-
 }
+
+$vilain = [$vilain1, $vilain2, $vilain3, $vilain4, $vilain5, $vilain6, $vilain7, $vilain8, $vilain9, $vilain10];
+
+    $vilain1 = new Vilains("Radditz", 100, 20, 10, $hero($i));
+    $vilain2 = new Vilains("Freezer", 100, 20, 10, $hero($i));
+    $vilain3 = new Vilains("Cell", 100, 20, 10, $hero($i));
+    $vilain4 = new Vilains("Janemba", 100, 20, 10, $hero($i));
+    $vilain5 = new Vilains("Buu", 100, 20, 10, $hero($i));
+    $vilain6 = new Vilains("Dr. Gero", 100, 20, 10, $hero($i));
+    $vilain7 = new Vilains("Zamasu", 100, 20, 10, $hero($i));
+    $vilain8 = new Vilains("Cell Jr.", 100, 20, 10, $hero($i));
+    $vilain9 = new Vilains("Saibaiman", 100, 20, 10, $hero($i));
+    $vilain10 = new Vilains("Li Shenron", 100, 20, 10, $hero($i));
 
 class Vilains extends Personnage{
     
@@ -141,19 +152,6 @@ class Vilains extends Personnage{
         parent::__construct($nom, $vie, $puissance_attaque, $degats_subis, $adversaire);
     }
     
-    $vilain = [$vilain1, $vilain2, $vilain3, $vilain4, $vilain5, $vilain6, $vilain7, $vilain8, $vilain9, $vilain10];
-
-    $vilain1 = new Vilains("Radditz", 100, 20, 10, $hero($i));
-    $vilain2 = new Vilains("Freezer", 100, 20, 10, $hero($i));
-    $vilain3 = new Vilains("Cell", 100, 20, 10, $hero($i));
-    $vilain4 = new Vilains("Janemba", 100, 20, 10, $hero($i));
-    $vilain5 = new Vilains("Buu", 100, 20, 10, $hero($i));
-    $vilain6 = new Vilains("Dr. Gero", 100, 20, 10, $hero($i));
-    $vilain7 = new Vilains("Zamasu", 100, 20, 10, $hero($i));
-    $vilain8 = new Vilains("Cell Jr.", 100, 20, 10, $hero($i));
-    $vilain9 = new Vilains("Saibaiman", 100, 20, 10, $hero($i));
-    $vilain10 = new Vilains("Li Shenron", 100, 20, 10, $hero($i));
-
 }
 
 class combat extends Personnage{
@@ -169,6 +167,75 @@ class combat extends Personnage{
         parent::__construct($nom, $vie, $puissance_attaque, $degats_subis, $adversaire);
     }
 
+    public function enJeu(){
+            
+        echo "Veuillez choisir une action : c pour combattre ou q pour quitter." . PHP_EOL;
+        
+        $action = readline();
+        switch ($action){
+            case "c":
+                while($this->vie > 0 && $this->adversaire->vie > 0){
+                    
+                    est_mort();
+                    $this->attaque($this->adversaire);
+                    $this->adversaire->attaque($this);
+                    
+                    $this->attaque($this->adversaire) = $this->prendre_degats($this->degats_subis);
+                    $this->adversaire->attaque($this) = $this->adversaire->prendre_degats($this->degats_subis);
+
+                    echo "Veuillez choisir une action : a pour attaquer, t pour transformation, et f pour essayer de prendre la fuite." . PHP_EOL;
+                    $decision = readline();
+                    switch ($decision){
+                        case "a":
+                            echo "Vous avez choisi d'attaquer." . PHP_EOL . "Veuillez choisir entre une attaque normale (n) ou une attaque spéciale (s)." . PHP_EOL;
+                            $attaque = readline();
+                            switch ($attaque){
+                                case "n":
+                                    echo "Vous avez choisi l'option attaque normale." . PHP_EOL;
+                                    $this->attaque($this->adversaire);
+                                    //
+                                    break;
+                                case "s":
+                                    echo "Vous avez choisi l'option attaque spéciale." . PHP_EOL;
+                                    $attaque_speciale = readline();
+                                    switch ($attaque_speciale){
+                                        case 1:
+                                            echo "Vous avez choisi l'attaque spéciale Kienzan." . PHP_EOL;
+                                            $this->attaque($this->adversaire);
+                                            //
+                                            break;
+                                        case 2:
+                                            echo "Vous avez choisi l'attaque spéciale Kamehameha." . PHP_EOL;
+                                            $this->attaque($this->adversaire);
+                                            //
+                                            break;
+                                        case 3:
+                                            echo "Vous avez choisi l'attaque spéciale Genkidama." . PHP_EOL;
+                                            $this->attaque($this->adversaire);
+                                            //
+                                            break;
+                                    //
+                                    break;
+                                    $adversaire->choiceAboutActions();
+                            }
+                            break;
+                        }
+                    break;
+                    //
+            case "q":
+                echo "Vous avez quitté le jeu.";
+                exit();
+            default:
+                echo "Veuillez choisir une action valide." . PHP_EOL;
+                enJeu();
+                break;
+        endswitch;
+                }
+        }
+    }        //est_vivant();
+        
+    }
+
     public function systeme_de_combat(){
         $this->adversaire = $adversaire;
         $this->nom = $nom;
@@ -182,85 +249,8 @@ class combat extends Personnage{
         //synopsis(); if play puis choixCamp();
 
         choixCamp();
-
-
-        public function enJeu(){
-            
-            echo "Veuillez choisir une action : c pour combattre ou q pour quitter." . PHP_EOL;
-            
-            $action = readline();
-            switch ($action){
-                case "c":
-                    while($this->vie > 0 && $this->adversaire->vie > 0){
-                        
-                        $this->attaque($this->adversaire);
-                        $this->adversaire->attaque($this);
-                        
-                        $this->attaque($this->adversaire) = $this->prendre_degats($this->degats_subis);
-                        $this->adversaire->attaque($this) = $this->adversaire->prendre_degats($this->degats_subis);
-
-                        echo "Veuillez choisir une action : a pour attaquer, t pour transformation, et f pour essayer de prendre la fuite." . PHP_EOL;
-                        $decision = readline();
-                        switch ($decision){
-                            case "a":
-                                echo "Vous avez choisi d'attaquer." . PHP_EOL . "Veuillez choisir entre une attaque normale (n) ou une attaque spéciale (s)." . PHP_EOL;
-                                $attaque = readline();
-                                switch ($attaque){
-                                    case "n":
-                                        echo "Vous avez choisi l'option attaque normale." . PHP_EOL;
-                                        $this->attaque($this->adversaire);
-                                        //
-                                        break;
-                                    case "s":
-                                        echo "Vous avez choisi l'option attaque spéciale." . PHP_EOL;
-                                        $attaque_speciale = readline();
-                                        switch ($attaque_speciale){
-                                            case 1:
-                                                echo "Vous avez choisi l'attaque spéciale Kienzan." . PHP_EOL;
-                                                $this->attaque($this->adversaire);
-                                                //
-                                                break;
-                                            case 2:
-                                                echo "Vous avez choisi l'attaque spéciale Kamehameha." . PHP_EOL;
-                                                $this->attaque($this->adversaire);
-                                                //
-                                                break;
-                                            case 3:
-                                                echo "Vous avez choisi l'attaque spéciale Genkidama." . PHP_EOL;
-                                                $this->attaque($this->adversaire);
-                                                //
-                                                break;
-                                        //
-                                        break;
-                                        $adversaire->choiceAboutActions();
-                                }
-                                break;
-                            }
-
-                        est_mort();
-                        break;
-                        //
-                case "q":
-                    echo "Vous avez quitté le jeu.";
-                    exit();
-                default:
-                    echo "Veuillez choisir une action valide." . PHP_EOL;
-                    enJeu();
-                    break;
-            endswitch;
-                    }
-            }
-        }
-                
-
-
-
+        enJeu();
         
-
-
-            //est_vivant();
-            
-        }
     }
 }
 
@@ -302,13 +292,13 @@ class IA extends Personnage{
             est_mort();
         }
     }
-}
 
-public function choiceAboutActions() {
-    $random = rand(0, 2);
-    $action = [$attaque, $transformation , $fuite];
-    $choixFinal = $action[$random];
-    return "$nom a choisi  l'option $choixFinal";
+    public function choiceAboutActions(){
+        $random = rand(0, 2);
+        $action = [$attaque, $transformation, $fuite];
+        $choixFinal = $action[$random];
+        return "$nom a choisi l'option $choixFinal";
+    }
 }
 
 // class Jeu extends combat{
