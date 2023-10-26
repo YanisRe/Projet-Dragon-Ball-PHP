@@ -229,7 +229,7 @@ class combat extends Personnage{
                 echo "Veuillez choisir une action valide." . PHP_EOL;
                 enJeu();
                 break;
-        endswitch;
+        //endswitch;
                 }
         }
     }        //est_vivant();
