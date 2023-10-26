@@ -56,7 +56,9 @@ class Personnage{
 
 
 }
+class combat{
 
+}
 class Heros extends Personnage{
 
 
