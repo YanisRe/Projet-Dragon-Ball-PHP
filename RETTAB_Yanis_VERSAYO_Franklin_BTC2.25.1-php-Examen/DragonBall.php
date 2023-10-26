@@ -184,43 +184,47 @@ class combat extends Personnage{
         choixCamp();
 
 
-        public function menu(){
-            echo "Bienvenue dans le jeu Dragon Ball !" . PHP_EOL;
-            echo "Veuillez choisir une action : p pour jouer ou q pour quitter." . PHP_EOL;
+        public function enJeu(){
+            
+            echo "Veuillez choisir une action : c pour combattre ou q pour quitter." . PHP_EOL;
+            
             $action = readline();
-            switch ($action):
-                case "p":
-                    synopsis();
-                    break;
+            switch ($action){
+                case "c":
+                    while($this->vie > 0 && $this->adversaire->vie > 0){
+                        
+                        $this->attaque($this->adversaire);
+                        $this->adversaire->attaque($this);
+                        
+                        $this->attaque($this->adversaire) = $this->prendre_degats($this->degats_subis);
+                        $this->adversaire->attaque($this) = $this->adversaire->prendre_degats($this->degats_subis);
+
+                        $decision = readline();
+                        switch ($decision){
+                            case "a":
+                                echo "Vous avez choisi d'attaquer." . PHP_EOL . "Veuillez choisir entre une attaque normale (n) ou une attaque spéciale (s)." . PHP_EOL;
+                                $attaque = readline();
+                                switch ($attaque){
+                                    echo "Vous avez choisi l'option attaque normale." . PHP_EOL;
+                                    
+                                }
+                                break;
+                            }
+
+                        est_mort();
+                        break;
+                        //
                 case "q":
                     echo "Vous avez quitté le jeu.";
-                    break;
+                    exit();
                 default:
                     echo "Veuillez choisir une action valide." . PHP_EOL;
-                    $action = readline();
+                    enJeu();
                     break;
             endswitch;
-        }
-        echo "Veuillez choisir une action : c pour combattre ou q pour quitter." . PHP_EOL;
-        
-        $action = readline();
-        switch ($action):
-            case "c":
-                while($this->vie > 0 && $this->adversaire->vie > 0){
-                    
-                    $this->attaque($this->adversaire);
-                    $this->adversaire->attaque($this);
-                    
-                    $this->attaque($this->adversaire) = $this->prendre_degats($this->degats_subis);
-                    $this->adversaire->attaque($this) = $this->adversaire->prendre_degats($this->degats_subis);
-                    est_mort();
-                    //
-            case "q":
-                echo "Vous avez quitté le jeu.";
-                break;
-            default:
-                echo "Veuillez choisir une action valide." . PHP_EOL;
-                break;
+                    }
+            }
+
                 
 
 
@@ -274,33 +278,33 @@ class IA extends Personnage{
     }
 }
 
-class Jeu extends combat{
+// class Jeu extends combat{
     
-        private $adversaire;
-        private $nom;
-        private $vie;
-        private $puissance_attaque;
-        private $degats_subis;
-        private $est_vilain;
-        private $est_heros;
+//         private $adversaire;
+//         private $nom;
+//         private $vie;
+//         private $puissance_attaque;
+//         private $degats_subis;
+//         private $est_vilain;
+//         private $est_heros;
     
-        public function __construct($nom, $vie, $puissance_attaque, $degats_subis, $adversaire, $est_vilain, $est_heros){
-            parent::__construct($nom, $vie, $puissance_attaque, $degats_subis, $adversaire);
-            $this->est_vilain = $est_vilain;
-            $this->est_heros = $est_heros;
-        }
+//         public function __construct($nom, $vie, $puissance_attaque, $degats_subis, $adversaire, $est_vilain, $est_heros){
+//             parent::__construct($nom, $vie, $puissance_attaque, $degats_subis, $adversaire);
+//             $this->est_vilain = $est_vilain;
+//             $this->est_heros = $est_heros;
+//         }
     
-        public function systeme_de_jeu(){
-            $this->adversaire = $adversaire;
-            $this->nom = $nom;
-            $this->vie = $vie;
-            $this->puissance_attaque = $puissance_attaque;
-            $this->degats_subis = $degats_subis;
-            $this->adversaire = $adversaire;
-            $this->est_vilain = $est_vilain;
-            $this->est_heros = $est_heros;
+//         public function systeme_de_jeu(){
+//             $this->adversaire = $adversaire;
+//             $this->nom = $nom;
+//             $this->vie = $vie;
+//             $this->puissance_attaque = $puissance_attaque;
+//             $this->degats_subis = $degats_subis;
+//             $this->adversaire = $adversaire;
+//             $this->est_vilain = $est_vilain;
+//             $this->est_heros = $est_heros;
 
-        }
-}
+//         }
+// }
 
 ?>
