@@ -402,10 +402,10 @@ while (true) {
             break;
 
 
-            case '4':
-                // Règles du jeu
-                echo ""
-                break;
+            // case '4':
+            //     // Règles du jeu
+            //     echo ""
+            //     break;
         case '5':
             //
             exit();
