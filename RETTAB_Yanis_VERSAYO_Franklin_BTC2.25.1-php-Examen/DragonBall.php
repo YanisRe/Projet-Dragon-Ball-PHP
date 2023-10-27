@@ -1,5 +1,5 @@
 <?php
-
+//on crée la class perso dans laquelle on aura les infos les concernant
 class Personnage {
     protected $nom;
     protected $vie;
@@ -32,7 +32,7 @@ class Personnage {
             'est_vilain' => $this->est_vilain,
         ];
     }
-    
+    //nos getter de d'attributs de persos
     public function getNom() {
         return $this->nom;
     }
@@ -69,7 +69,7 @@ class Personnage {
     }
 
 }
-
+//ici la class héros qui hérite du parent personnage
 class Heros extends Personnage {
     protected $victoires = 0;
     protected $attaqueSpecialeDebloquee = false;
@@ -90,7 +90,7 @@ class Heros extends Personnage {
         $this->degats_subis = $data['degats_subis'];
         $this->est_vilain = $data['est_vilain'];
     }
-    
+    //le systeme pour débloquer l'attaque spéciale Kienzan
     public function attaqueSpecialeKienzan($adversaire) {
         if ($this->attaqueSpecialeDebloquee) {
             if ($this->vie >= 10) {
@@ -102,7 +102,7 @@ class Heros extends Personnage {
             }
         }
     }
-
+    //le débloquage de l'attaque spéciale Kamehameha
     public function attaqueSpecialeKamehameha($adversaire) {
         if ($this->attaqueSpecialeDebloquee) {
             if ($this->vie >= 30) {
@@ -112,7 +112,7 @@ class Heros extends Personnage {
             }
         }
     }
-
+    //le débloquage de l'attaque spéciale Genki dama
     public function attaqueSpecialeGenkidama($adversaire) {
         if ($this->attaqueSpecialeDebloquee) {
             if ($this->vie >= 80) {
@@ -125,7 +125,7 @@ class Heros extends Personnage {
         }
     }
 
-
+    //on crée un systeme d'attaque spéciale
     public function attaqueSpeciale($adversaire) {
         if ($this->attaqueSpecialeDebloquee) {
             if ($this->vie >= 10) {
@@ -139,6 +139,8 @@ class Heros extends Personnage {
             echo $this->nom . " n'a pas encore débloqué l'attaque spéciale Kienzan." . PHP_EOL;
         }
     }
+
+    //on permet l'amélioration du personnage pour débloquezr la premiere attaque spéciale
     public function ameliorerPersonnage() {
         $this->victoires++;
 
@@ -170,7 +172,7 @@ class Heros extends Personnage {
         }
     }
 }
-
+//on crée une class vilain qui hérite de Personnage tout comme pour les Heros
 class Vilains extends Personnage {
     public function __construct($nom) {
         parent::__construct($nom, 100, 20, true);
@@ -198,7 +200,7 @@ class Vilains extends Personnage {
         }
     }
 }
-
+//on crée une class combat qui va gérer tout le systeme de combat
 class Combat {
     
     private $victoires = 0;
@@ -237,7 +239,7 @@ class Combat {
             echo "Choix non valide, aucune amélioration effectuée." . PHP_EOL;
         }
     }
-
+    //ici on affiche le résultat du combat après la fin de celui-ci
     public function afficherResultatCombat($heros, $vilain) {
         if ($heros->estMort()) {
             echo $heros->getNom() . " a été vaincu par " . $vilain->getNom() . "!" . PHP_EOL;
@@ -245,7 +247,7 @@ class Combat {
             echo $vilain->getNom() . " a été vaincu par " . $heros->getNom() . "!" . PHP_EOL;
         }
     }
-
+    //ici on gère le combat en lui même
     public function combat($heros, $vilain) {
         while ($heros->estVivant() && $vilain->estVivant()) {
             $this->afficherStatistiques($heros);
@@ -276,7 +278,7 @@ class Combat {
             }
             $this->afficherStatistiques($vilain);
         }
-
+        //on affiche l'écran de victoire en cas de 10 combats réussis
         $this->afficherResultatCombat($heros, $vilain);
         if ($heros->estVivant()) {
             $this->victoires++;
@@ -288,7 +290,7 @@ class Combat {
     }
 }    
 
-
+//on crée la class DragonBallGame qui va gérer le jeu par rapport aux sauvegardes
 class DragonBallGame {
     private $filename;
     private $player;
@@ -324,6 +326,7 @@ class DragonBallGame {
         }
     }
     
+    //ici on recupere les données du joueur pour les sauvegarder
 
     public function saveGameState($player) {
     $gameState = [
@@ -378,7 +381,7 @@ public function delGameState() {
 }
 
 $game = new DragonBallGame('dragon_ball_save.json', null);
-
+//on crée le menu du jeu
 while (true) {
     echo "MENU :" . PHP_EOL;
     echo "1. Lancer une nouvelle partie" . PHP_EOL;
@@ -389,11 +392,13 @@ while (true) {
     echo "6. Quitter" . PHP_EOL;
 
     $choix = readline("Faites votre choix (1/2/3/4/5) : ");
-
+    //on crée le systeme de choix du menu
     switch ($choix) {
         case '1':
             $i = 1;
             $game->delGameState();
+            echo "Bonjour et bienvenue dans le monde de Dragon Ball !\nDans ce jeu vous serez amené à combattre, devenir toujours plus fort et bien sur vaincre vos ennemis !" . PHP_EOL;
+            "Commencez donc par créer votre personnage, celui-ci vous accompagnera tout au long de votre aventure !" . PHP_EOL;
             
             echo "Choisissez un camp : (H) Héros ou (V) Vilain" . PHP_EOL;
             $choixCamp = strtolower(readline("Entrez votre choix (H/V) : "));
@@ -414,7 +419,7 @@ while (true) {
             }
             
             $game->saveGameState($player);        
-            
+            //on crée les ennemis
             $game = new DragonBallGame('dragon_ball_save.json', $player);
             $game->loadGameState();
             
@@ -465,7 +470,7 @@ while (true) {
                     echo "Aucune partie sauvegardée trouvée." . PHP_EOL;
                 }
                 break;
-            
+            //on affiche les statistiques des ennemis vaincus
                 case '3':
                     $i = 1;
             
@@ -480,7 +485,7 @@ while (true) {
                 echo "Aucun ennemi vaincu pour le moment." . PHP_EOL;
             }
             break;
-
+            //systeme de soin
             case '4':
                 if ($player !== null) {
                     $player->prendreDegats(-50); // Vous pouvez ajuster le montant de soins ici
@@ -495,7 +500,15 @@ while (true) {
                 break;
             case '5':
                 // Règles du jeu
-                echo "Test" . PHP_EOL;
+                echo "Votre objectif pour remporter la partie est simple :\n
+                Vous devez remporter un total de 10 combats en tant que Vilain ou Héros.\n
+                Pour cela, vous serez amenés à prendre des décisions lors de ces derniers.\n
+                Les combats s'organisent de la sorte : Vous pouvez attaquer (de base ou spé.)\n
+                ou encore vous enfuir !\n
+                Notez que ce jeu est doté d'un système de sauvegarde automatique qui vous\n
+                permettra de reprendre à la fin de votre dernier combat.\n
+                Vous pouvez également supprimer votre sauvegarde si vous le désirez.\n
+                Bon jeu et bonne chance à vous !\n" . PHP_EOL;
                 $regle = readline("Appuyez-sur Q pour quitter la page des règles du jeu ");
                 if($regle == "Q" || $regle == "q")
                 {
@@ -503,6 +516,7 @@ while (true) {
                     sleep(3);
                     break;
                 }
+                //on quitte la page des regles du jeu
                 else{
                     while($regle != "Q" || $regle != "q"){
                         echo "Vous n'avez pas appuyé sur Q." . PHP_EOL;
@@ -519,7 +533,7 @@ while (true) {
         case '6':
             exit();
             break;
-
+            //on empeche les choix invalides
         default:
             echo "Choix non valide. Veuillez choisir une option valide (1/2/3/4/5)." . PHP_EOL;
             break;
