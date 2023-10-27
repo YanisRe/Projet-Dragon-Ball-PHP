@@ -95,9 +95,13 @@ class Personnage {
 }
 
 class Heros extends Personnage {
+    protected $victoires = 0;
+    protected $attaqueSpecialeDebloquee = false;
+
     public function __construct($nom) {
         parent::__construct($nom, 300, 20);
     }
+
 
     public function estVivant() {
         return $this->vie > 0;
@@ -112,14 +116,98 @@ class Heros extends Personnage {
         //$this->inventaire = $data['inventaire'];
     }
     
-
-    public function attaqueSpeciale($adversaire) {
-        if ($this->vie >= 30) {
-            $this->vie -= 30;
-            $adversaire->prendreDegats(40);
-            echo $this->nom . " a lancé l'attaque spéciale Kamehameha!" . PHP_EOL;
+    public function attaqueSpecialeKienzan($adversaire) {
+        if ($this->attaqueSpecialeDebloquee) {
+            if ($this->vie >= 10) {
+                $this->vie -= 10;
+                $adversaire->prendreDegats(20);
+                echo $this->nom . " a lancé l'attaque spéciale Kienzan!" . PHP_EOL;
+            } else {
+                echo $this->nom . " n'a pas suffisamment de vie pour utiliser l'attaque spéciale." . PHP_EOL;
+            }
         } else {
-            echo $this->nom . " n'a pas suffisamment de vie pour utiliser l'attaque spéciale." . PHP_EOL;
+            echo $this->nom . " n'a pas encore débloqué l'attaque spéciale Kienzan." . PHP_EOL;
+        }
+    }
+
+    public function attaqueSpecialeKamehameha($adversaire) {
+        if ($this->attaqueSpecialeDebloquee) {
+            if ($this->vie >= 30) {
+                $this->vie -= 30;
+                $adversaire->prendreDegats(60);
+                echo $this->nom . " a lancé l'attaque spéciale Kienzan!" . PHP_EOL;
+            } else {
+                echo $this->nom . " n'a pas suffisamment de vie pour utiliser l'attaque spéciale." . PHP_EOL;
+            }
+        }
+    }
+
+    public function attaqueSpecialeGenkidama($adversaire) {
+        if ($this->attaqueSpecialeDebloquee) {
+            if ($this->vie >= 80) {
+                $this->vie -= 80;
+                $adversaire->prendreDegats(160);
+                echo $this->nom . " a lancé l'attaque spéciale Kienzan!" . PHP_EOL;
+            } else {
+                echo $this->nom . " n'a pas suffisamment de vie pour utiliser l'attaque spéciale." . PHP_EOL;
+            }
+        }
+    }
+
+
+    public function attaqueSpeciale($adversaire, $specialite) {
+        $specialite = [1, 3];
+        if ($specialite === "kienzan") {
+            $this->attaqueSpecialeKienzan($adversaire);
+        } elseif ($specialite === "kamehameha") {
+            $this->attaqueSpecialeKamehameha($adversaire);
+        } elseif ($specialite === "genkidama") {
+            $this->attaqueSpecialeGenkidama($adversaire);
+        }
+        if ($specialite === 1) {
+            $this->attaqueSpecialeKienzan($adversaire);
+        } elseif ($specialite === 2) {
+            $this->attaqueSpecialeKamehameha($adversaire);
+        } elseif ($specialite === 3) {
+            $this->attaqueSpecialeGenkidama($adversaire);
+        }
+        // if ($this->vie >= 30) {
+        //     $this->vie -= 30;
+        //     $adversaire->prendreDegats(40);
+        //     echo $this->nom . " a lancé l'attaque spéciale Kamehameha!" . PHP_EOL;
+        // } else {
+        //     echo $this->nom . " n'a pas suffisamment de vie pour utiliser l'attaque spéciale." . PHP_EOL;
+        // }
+    }
+
+    public function ameliorerPersonnage() {
+        $this->victoires++;
+
+        if ($this->victoires >= 1 && $this->victoires % 1 === 0) {
+            echo $this->getNom() . " a débloqué une nouvelle attaque : Kienzan!" . PHP_EOL;
+            $this->attaqueSpecialeDebloquee = true;
+            $this->puissance_attaque += 10;
+        }
+
+        if ($this->victoires >= 4 && $this->victoires % 4 === 0) {
+            echo $this->getNom() . " a débloqué une nouvelle attaque : Kamehameha!" . PHP_EOL;
+            $this->puissance_attaque += 30;
+        }
+
+        if ($this->victoires >= 9 && $this->victoires % 9 === 0) {
+            echo $this->getNom() . " a débloqué une nouvelle attaque : Genkidama!" . PHP_EOL;
+            $this->puissance_attaque += 80;
+        }
+
+        echo "Amélioration obtenue ! Choisissez ce que vous voulez améliorer :\n";
+        $choixAmelioration = readline("Choisissez un bonus mystère en tapant 1 ou 2 : ");
+
+        if ($choixAmelioration === '1') {
+            $this->puissance_attaque = ceil($this->puissance_attaque + $this->puissance_attaque * .01);
+        } elseif ($choixAmelioration === '2') {
+            $this->vie = ceil($this->vie + $this->vie * .01);
+        } else {
+            echo "Choix non valide, aucune amélioration effectuée." . PHP_EOL;
         }
     }
 }
@@ -159,6 +247,38 @@ class Combat {
         echo $personnage->getNom() . " - Points de vie : " . $personnage->getVie() . " - Puissance d'attaque : " . $personnage->getPuissance_attaque() . PHP_EOL;
     }
 
+    public function ameliorerPersonnage() {
+        $this->victoires++;
+
+        if ($this->victoires >= 1 && $this->victoires % 1 === 0) {
+            echo $this->getNom() . " a débloqué une nouvelle attaque : Kienzan!" . PHP_EOL;
+            $this->puissance_attaque += 10;
+        }
+
+        if ($this->victoires >= 4 && $this->victoires % 4 === 0) {
+            echo $this->getNom() . " a débloqué une nouvelle attaque : Kamehameha!" . PHP_EOL;
+            $this->puissance_attaque += 20;
+        }
+
+        if ($this->victoires >= 9 && $this->victoires % 9 === 0) {
+            echo $this->getNom() . " a débloqué une nouvelle attaque : Genkidama!" . PHP_EOL;
+            $this->puissance_attaque += 30;
+        }
+
+        echo "Amélioration obtenue ! Choisissez ce que vous voulez améliorer :\n";
+        echo "1. Attaque (+2%)\n";
+        echo "2. Vie (+2%)\n";
+        $choixAmelioration = readline("Faites votre choix (1/2) : ");
+
+        if ($choixAmelioration === '1') {
+            $this->puissance_attaque = ceil($this->puissance_attaque * 1.02);
+        } elseif ($choixAmelioration === '2') {
+            $this->vie = ceil($this->vie * 1.02);
+        } else {
+            echo "Choix non valide, aucune amélioration effectuée." . PHP_EOL;
+        }
+    }
+
     public function afficherResultatCombat($heros, $vilain) {
         if ($heros->estMort()) {
             echo $heros->getNom() . " a été vaincu par " . $vilain->getNom() . "!" . PHP_EOL;
@@ -181,7 +301,7 @@ class Combat {
                     echo $heros->getNom() . " a attaqué " . $vilain->getNom() . " avec une attaque normale!" . PHP_EOL;
                     break;
                 case "2":
-                    $heros->attaqueSpeciale($vilain);
+                    $heros->attaqueSpeciale($vilain, $specialite);
                     break;
                 // case "3":
                 //     echo "Inventaire de " . $heros->getNom() . ": " . implode(", ", $heros->inventaire) . PHP_EOL;
@@ -206,7 +326,8 @@ class Combat {
         $this->afficherResultatCombat($heros, $vilain);
         if ($heros->estVivant()) {
             $heros->prendreDegats(-10);
-            echo $heros->getNom() . " a débloqué une nouvelle attaque : Kamehameha!" . PHP_EOL;
+            // echo $heros->getNom() . " a débloqué une nouvelle attaque : Kamehameha!" . PHP_EOL;
+            // ameliorerPersonnage();
         }
     }
 }
@@ -269,9 +390,9 @@ class DragonBallGame {
 public function delGameState() {
     if (file_exists($this->filename)) {
         unlink($this->filename);
-        echo "Sauvegarde supprimée avec succès." . PHP_EOL;
+        echo "Sauvegarde supprimée avec succès !" . PHP_EOL;
     } else {
-        echo "Aucune sauvegarde trouvée à supprimer." . PHP_EOL;
+        echo "Aucune sauvegarde trouvée !" . PHP_EOL;
     }
 }
     
@@ -282,7 +403,7 @@ public function delGameState() {
         } else {
             echo "Aucun joueur n'a été chargé." . PHP_EOL;
         }
-    }
+    }   
 
     public function setPlayer($player) {
         $this->player = $player;
@@ -307,17 +428,17 @@ while (true) {
     echo "MENU :" . PHP_EOL;
     echo "1. Lancer une nouvelle partie" . PHP_EOL;
     echo "2. Charger une partie" . PHP_EOL;
-    echo "3. Statistiques des ennemis tués" . PHP_EOL;
-    echo "4. Quitter" . PHP_EOL;
+    echo "3. Statistiques des ennemis vaincus" . PHP_EOL;
+    echo "4. Règles" . PHP_EOL;
+    echo "5. Quitter" . PHP_EOL;
 
-    $choix = readline("Faites votre choix (1/2/3/4) : ");
+    $choix = readline("Faites votre choix (1/2/3/4/5) : ");
 
     switch ($choix) {
         case '1':
             $i = 1;
             $game->delGameState();
-        
-
+            
             echo "Choisissez un camp : (H) Héros ou (V) Vilain" . PHP_EOL;
             $choixCamp = strtolower(readline("Entrez votre choix (H/V) : "));
             
@@ -335,7 +456,8 @@ while (true) {
                 echo "Camp non valide. Choisissez h pour héros ou v pour vilain." . PHP_EOL;
                 break;
             }
-        
+            
+            $game->saveGameState($player);        
             
             $game = new DragonBallGame('dragon_ball_save.json', $player);
             $game->loadGameState(); // Charge l'état du jeu au démarrage
@@ -358,6 +480,9 @@ while (true) {
             $combat->combat($player, $vilain);
         
             $game->addDefeatedEnemy($vilain->getNom());
+            if ($player->estVivant()) {
+                $player->prendreDegats(-10);
+            }
             $game->saveGameState($player);
         
             $game->getPlayerStats($player);
@@ -379,6 +504,10 @@ while (true) {
                     $combat->combat($player, $vilain);
             
                     $game->addDefeatedEnemy($vilain->getNom());
+                    if ($player->estVivant()) {
+                        $player->prendreDegats(-10);
+                        $player->ameliorerPersonnage(); 
+                    }
                     $game->saveGameState($player);
             
                     $game->getPlayerStats($player);
@@ -392,9 +521,10 @@ while (true) {
             
             $defeatedEnemies = $game->getDefeatedEnemies();
             if (!empty($defeatedEnemies)) {
-                echo "Statistiques des ennemis tués :" . PHP_EOL;
+                echo "Statistiques des ennemis vaincus :" . PHP_EOL;
                 foreach ($defeatedEnemies as $enemy) {
                     echo "Combat n°$i - $enemy" . PHP_EOL;
+                    $i++;
                 }
             } else {
                 echo "Aucun ennemi vaincu pour le moment." . PHP_EOL;
@@ -402,10 +532,29 @@ while (true) {
             break;
 
 
-            // case '4':
-            //     // Règles du jeu
-            //     echo ""
-            //     break;
+            case '4':
+                // Règles du jeu
+                echo "Test" . PHP_EOL;
+                $regle = readline("Appuyez-sur Q pour quitter la page des règles du jeu ");
+                if($regle == "Q" || $regle == "q")
+                {
+                    echo "Vous allez quitté la page des règles du jeu." . PHP_EOL;
+                    sleep(3);
+                    break;
+                }
+                else{
+                    while($regle != "Q" || $regle != "q"){
+                        echo "Vous n'avez pas appuyé sur Q." . PHP_EOL;
+                        sleep(3);
+                        $regle = readline("Appuyez-sur Q pour quitter la page des règles du jeu ");
+                        if($regle == "Q" || $regle == "q")
+                        {
+                            echo "Vous allez quitté la page des règles du jeu." . PHP_EOL;
+                            sleep(3);
+                            break;
+                        }
+                    }
+                }
         case '5':
             //
             exit();
