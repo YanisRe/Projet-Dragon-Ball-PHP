@@ -175,7 +175,7 @@ class Combat {
 
             echo "Actions possibles : (1) Attaque normale, (2) Attaque spéciale, (3) Utiliser objet, (4) Fuir" . PHP_EOL;
             $action = readline("Choisissez une action (1/2/3/4) : ");
-
+            //apres avoir demander au joueur ce quil veut faire on creer le systeme pour gerer les actions
             switch ($action) {
                 case "1":
                     $heros->attaque($vilain);
@@ -203,7 +203,7 @@ class Combat {
             }
             $this->afficherStatistiques($vilain);
         }
-
+        //puis on affiche les resultats du combat
         $this->afficherResultatCombat($heros, $vilain);
         if ($heros->estVivant()) {
             $heros->prendreDegats(-10);
@@ -212,7 +212,7 @@ class Combat {
     }
 }
 
-
+//on creer une class qui servira a gerer les sauvegardes
 class DragonBallGame {
     private $filename;
     private $player;
@@ -222,7 +222,7 @@ class DragonBallGame {
         $this->filename = $filename;
         $this->player = $player;
     }
-
+    //on relit le fichier de sauvegarde pour reprendre ou le joueur etait
     public function loadGameState() {
         if (file_exists($this->filename)) {
             $gameStateJSON = file_get_contents($this->filename);
@@ -245,10 +245,11 @@ class DragonBallGame {
         }
         else {
             echo "Aucune sauvegarde trouvée." . PHP_EOL;
+            //on precise quand sa echoue
         }
     }
     
-
+    //on ecrit dans un fichier externe les donnees du joueur, qu'on lira lors du chargement de la sauvegarde
     public function saveGameState($player) {
     $gameState = [
         'player' => [
@@ -261,12 +262,12 @@ class DragonBallGame {
         ],
         'defeatedEnemies' => $this->defeatedEnemies,
     ];
-
+    //on indique au joueur que la sauvegarde a bien ete effectue
     $gameStateJSON = json_encode($gameState);
     file_put_contents($this->filename, $gameStateJSON);
     echo "Sauvegarde effectuée avec succès." . PHP_EOL;
 }
-
+//on propose au joueur de supprimer sa sauvegarde si il le souhaite
 public function delGameState() {
     if (file_exists($this->filename)) {
         unlink($this->filename);
@@ -274,9 +275,11 @@ public function delGameState() {
     } else {
         echo "Aucune sauvegarde trouvée à supprimer." . PHP_EOL;
     }
+    //sinon on lui indique qu'il n'y a pas de sauvegarde qui a etee trouvee
+
 }
     
-
+    //on recupere les stats du joueur
     public function getPlayerStats() {
         if ($this->player !== null && $this->player instanceof Personnage) {
             $this->player->getPlayerStats();
@@ -302,7 +305,12 @@ public function delGameState() {
     }
 }
 
+
+
 $game = new DragonBallGame('dragon_ball_save.json', null);
+
+//on cree ici le menu principal du jeu, sur lequel on aura l'intégralité des actions dispo 
+//le tout dans une boucle pour éviter que le jeu se ferme après chaque choix
 
 while (true) {
     echo "MENU :" . PHP_EOL;
@@ -313,15 +321,20 @@ while (true) {
 
     $choix = readline("Faites votre choix (1/2/3/4) : ");
 
+    //on demande ce que le joueur souhaite faire
+
     switch ($choix) {
         case '1':
             $i = 1;
             $game->delGameState();
-        
+            
+            //on demande au joueur si il souhaite etre vilain ou heros
 
             echo "Choisissez un camp : (H) Héros ou (V) Vilain" . PHP_EOL;
             $choixCamp = strtolower(readline("Entrez votre choix (H/V) : "));
             
+            //on rend la réponse du joueur insensible à la casse avec le string to lower
+
             if ($choixCamp === 'h' || $choixCamp === 'H') {
                 
                 $nom = readline("Entrez le nom de votre personnage : ");
@@ -339,14 +352,14 @@ while (true) {
         
             
             $game = new DragonBallGame('dragon_ball_save.json', $player);
-            $game->loadGameState(); // Charge l'état du jeu au démarrage
+            $game->loadGameState(); 
 
         
             
             $game = new DragonBallGame('dragon_ball_save.json', $player);
-            $game->loadGameState(); // Charge l'état du jeu au démarrage
+            $game->loadGameState(); 
         
-            
+            //la liste des persos mechant dispo dans le jeu
             $availableVilains = [
                 new Vilains("Freezer"),
                 new Vilains("Cell"),
@@ -365,7 +378,7 @@ while (true) {
             $i += 1;
         
             break;
-
+            
             case '2':
             
                 $game->loadGameState();
