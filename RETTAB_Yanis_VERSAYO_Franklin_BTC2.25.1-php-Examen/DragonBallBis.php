@@ -6,7 +6,6 @@ class Personnage {
     protected $puissance_attaque;
     protected $degats_subis;
     protected $est_vilain;
-    protected $inventaire;
 
     public function __construct($nom, $vie, $puissance_attaque, $est_vilain = false) {
         $this->nom = $nom;
@@ -14,7 +13,6 @@ class Personnage {
         $this->puissance_attaque = $puissance_attaque;
         $this->degats_subis = 0;
         $this->est_vilain = $est_vilain;
-        $this->inventaire = [];
     }
 
     public function prendreDegats($degats) {
@@ -32,7 +30,6 @@ class Personnage {
             'puissance_attaque' => $this->puissance_attaque,
             'degats_subis' => $this->degats_subis,
             'est_vilain' => $this->est_vilain,
-            'inventaire' => $this->inventaire,
         ];
     }
     
@@ -61,9 +58,6 @@ class Personnage {
         echo "Nom : " . $this->getNom() . PHP_EOL;
         echo "Points de vie : " . $this->getVie() . PHP_EOL;
         echo "Puissance d'attaque : " . $this->getPuissance_attaque() . PHP_EOL;
-        if (!empty($this->inventaire)) {
-            echo "Inventaire : " . implode(", ", $this->inventaire) . PHP_EOL;
-        }
     }
 
     public function estVivant() {
@@ -74,24 +68,6 @@ class Personnage {
         return $this->vie <= 0;
     }
 
-    public function ajouterInventaire($objet) {
-        $this->inventaire[] = $objet;
-    }
-
-    public function utiliserObjet($objet) {
-        if (in_array($objet, $this->inventaire)) {
-            if ($objet === "potion") {
-                $this->vie += 20;
-                echo $this->nom . " a utilisé une potion et a récupéré 20 points de vie." . PHP_EOL;
-            }
-            $index = array_search($objet, $this->inventaire);
-            if ($index !== false) {
-                unset($this->inventaire[$index]);
-            }
-        } else {
-            echo $this->nom . " n'a pas cet objet dans son inventaire." . PHP_EOL;
-        }
-    }
 }
 
 class Heros extends Personnage {
@@ -113,7 +89,6 @@ class Heros extends Personnage {
         $this->puissance_attaque = $data['puissance_attaque'];
         $this->degats_subis = $data['degats_subis'];
         $this->est_vilain = $data['est_vilain'];
-        //$this->inventaire = $data['inventaire'];
     }
     
     public function attaqueSpecialeKienzan($adversaire) {
@@ -123,10 +98,8 @@ class Heros extends Personnage {
                 $adversaire->prendreDegats(20);
                 echo $this->nom . " a lancé l'attaque spéciale Kienzan!" . PHP_EOL;
             } else {
-                echo $this->nom . " n'a pas suffisamment de vie pour utiliser l'attaque spéciale." . PHP_EOL;
+                echo $this->nom . " n'a pas encore débloqué l'attaque spéciale Kienzan." . PHP_EOL;
             }
-        } else {
-            echo $this->nom . " n'a pas encore débloqué l'attaque spéciale Kienzan." . PHP_EOL;
         }
     }
 
@@ -136,8 +109,6 @@ class Heros extends Personnage {
                 $this->vie -= 30;
                 $adversaire->prendreDegats(60);
                 echo $this->nom . " a lancé l'attaque spéciale Kienzan!" . PHP_EOL;
-            } else {
-                echo $this->nom . " n'a pas suffisamment de vie pour utiliser l'attaque spéciale." . PHP_EOL;
             }
         }
     }
@@ -155,37 +126,25 @@ class Heros extends Personnage {
     }
 
 
-    public function attaqueSpeciale($adversaire, $specialite) {
-        $specialite = [1, 3];
-        if ($specialite === "kienzan") {
-            $this->attaqueSpecialeKienzan($adversaire);
-        } elseif ($specialite === "kamehameha") {
-            $this->attaqueSpecialeKamehameha($adversaire);
-        } elseif ($specialite === "genkidama") {
-            $this->attaqueSpecialeGenkidama($adversaire);
+    public function attaqueSpeciale($adversaire) {
+        if ($this->attaqueSpecialeDebloquee) {
+            if ($this->vie >= 10) {
+                $this->vie -= 10;
+                $adversaire->prendreDegats(20);
+                echo $this->nom . " a lancé l'attaque spéciale Kienzan!" . PHP_EOL;
+            } else {
+                echo $this->nom . " n'a pas suffisamment de vie pour utiliser l'attaque spéciale." . PHP_EOL;
+            }
+        } else {
+            echo $this->nom . " n'a pas encore débloqué l'attaque spéciale Kienzan." . PHP_EOL;
         }
-        if ($specialite === 1) {
-            $this->attaqueSpecialeKienzan($adversaire);
-        } elseif ($specialite === 2) {
-            $this->attaqueSpecialeKamehameha($adversaire);
-        } elseif ($specialite === 3) {
-            $this->attaqueSpecialeGenkidama($adversaire);
-        }
-        // if ($this->vie >= 30) {
-        //     $this->vie -= 30;
-        //     $adversaire->prendreDegats(40);
-        //     echo $this->nom . " a lancé l'attaque spéciale Kamehameha!" . PHP_EOL;
-        // } else {
-        //     echo $this->nom . " n'a pas suffisamment de vie pour utiliser l'attaque spéciale." . PHP_EOL;
-        // }
     }
-
     public function ameliorerPersonnage() {
         $this->victoires++;
 
         if ($this->victoires >= 1 && $this->victoires % 1 === 0) {
             echo $this->getNom() . " a débloqué une nouvelle attaque : Kienzan!" . PHP_EOL;
-            $this->attaqueSpecialeDebloquee = true;
+            $this->attaqueSpecialeDebloquee = true; // Assurez-vous d'utiliser l'attribut correct ici
             $this->puissance_attaque += 10;
         }
 
@@ -227,7 +186,6 @@ class Vilains extends Personnage {
         $this->puissance_attaque = $data['puissance_attaque'];
         $this->degats_subis = $data['degats_subis'];
         $this->est_vilain = $data['est_vilain'];
-        $this->inventaire = $data['inventaire'];
     }
     
     public function attaqueSpeciale($adversaire) {
@@ -243,11 +201,12 @@ class Vilains extends Personnage {
 
 class Combat {
     
+    private $victoires = 0;
     public function afficherStatistiques($personnage) {
         echo $personnage->getNom() . " - Points de vie : " . $personnage->getVie() . " - Puissance d'attaque : " . $personnage->getPuissance_attaque() . PHP_EOL;
     }
 
-    public function ameliorerPersonnage() {
+    public function ameliorerPersonnage($vie, $puissance_attaque) {
         $this->victoires++;
 
         if ($this->victoires >= 1 && $this->victoires % 1 === 0) {
@@ -292,7 +251,7 @@ class Combat {
             $this->afficherStatistiques($heros);
             $this->afficherStatistiques($vilain);
 
-            echo "Actions possibles : (1) Attaque normale, (2) Attaque spéciale, (3) Utiliser objet, (4) Fuir" . PHP_EOL;
+            echo "Actions possibles : (1) Attaque normale, (2) Attaque spéciale, (3) Fuir" . PHP_EOL;
             $action = readline("Choisissez une action (1/2/3/4) : ");
 
             switch ($action) {
@@ -301,14 +260,9 @@ class Combat {
                     echo $heros->getNom() . " a attaqué " . $vilain->getNom() . " avec une attaque normale!" . PHP_EOL;
                     break;
                 case "2":
-                    $heros->attaqueSpeciale($vilain, $specialite);
+                    $heros->attaqueSpeciale($vilain);
                     break;
-                // case "3":
-                //     echo "Inventaire de " . $heros->getNom() . ": " . implode(", ", $heros->inventaire) . PHP_EOL;
-                //     $objet = readline("Choisissez un objet de l'inventaire : ");
-                //     $heros->utiliserObjet($objet);
-                //     break;
-                case "4":
+                case "3":
                     echo $heros->getNom() . " a fui le combat." . PHP_EOL;
                     return;
                 default:
@@ -325,12 +279,14 @@ class Combat {
 
         $this->afficherResultatCombat($heros, $vilain);
         if ($heros->estVivant()) {
-            $heros->prendreDegats(-10);
-            // echo $heros->getNom() . " a débloqué une nouvelle attaque : Kamehameha!" . PHP_EOL;
-            // ameliorerPersonnage();
+            $this->victoires++;
+            if ($this->victoires >= 10) {
+                echo "Félicitations ! Vous avez gagné le jeu en obtenant 10 victoires !" . PHP_EOL;
+                exit();
+            }
         }
     }
-}
+}    
 
 
 class DragonBallGame {
@@ -377,7 +333,6 @@ class DragonBallGame {
             'puissance_attaque' => $player->getPuissance_attaque(),
             'degats_subis' => $player->getDegats_subis(),
             'est_vilain' => $player instanceof Vilains,
-            //'inventaire' => $player->inventaire,
         ],
         'defeatedEnemies' => $this->defeatedEnemies,
     ];
@@ -429,8 +384,9 @@ while (true) {
     echo "1. Lancer une nouvelle partie" . PHP_EOL;
     echo "2. Charger une partie" . PHP_EOL;
     echo "3. Statistiques des ennemis vaincus" . PHP_EOL;
-    echo "4. Règles" . PHP_EOL;
-    echo "5. Quitter" . PHP_EOL;
+    echo "4. Soigner et continuer" . PHP_EOL;
+    echo "5. Règles" . PHP_EOL;
+    echo "6. Quitter" . PHP_EOL;
 
     $choix = readline("Faites votre choix (1/2/3/4/5) : ");
 
@@ -460,13 +416,7 @@ while (true) {
             $game->saveGameState($player);        
             
             $game = new DragonBallGame('dragon_ball_save.json', $player);
-            $game->loadGameState(); // Charge l'état du jeu au démarrage
-
-        
-            
-            $game = new DragonBallGame('dragon_ball_save.json', $player);
-            $game->loadGameState(); // Charge l'état du jeu au démarrage
-        
+            $game->loadGameState();
             
             $availableVilains = [
                 new Vilains("Freezer"),
@@ -531,8 +481,19 @@ while (true) {
             }
             break;
 
-
             case '4':
+                if ($player !== null) {
+                    $player->prendreDegats(-50); // Vous pouvez ajuster le montant de soins ici
+                    $game->saveGameState($player);
+                    echo "Vous avez été soigné et êtes prêt à continuer le combat." . PHP_EOL;
+                    sleep(2);
+                    echo "Veuillez sélectionner charger une partie pour continuer." . PHP_EOL;
+                    sleep(3);
+                } else {
+                    echo "Aucune partie sauvegardée trouvée." . PHP_EOL;
+                }
+                break;
+            case '5':
                 // Règles du jeu
                 echo "Test" . PHP_EOL;
                 $regle = readline("Appuyez-sur Q pour quitter la page des règles du jeu ");
@@ -555,8 +516,7 @@ while (true) {
                         }
                     }
                 }
-        case '5':
-            //
+        case '6':
             exit();
             break;
 
