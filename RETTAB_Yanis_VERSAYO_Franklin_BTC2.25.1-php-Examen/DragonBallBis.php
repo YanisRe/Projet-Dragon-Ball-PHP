@@ -412,7 +412,7 @@ while (true) {
             break;
 
         default:
-            echo "Choix non valide. Veuillez choisir une option valide (1/2/3/4)." . PHP_EOL;
+            echo "Choix non valide. Veuillez choisir une option valide (1/2/3/4/5)." . PHP_EOL;
             break;
     }
 }
